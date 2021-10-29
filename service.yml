@@ -1,0 +1,8 @@
+kind: ExternalService
+name: bot
+spec:
+  image: ${IMAGE_URL}:${IMAGE_VERSION}
+  port: 5000
+  env:
+    - name: TOKEN
+      value: ${TOKEN}

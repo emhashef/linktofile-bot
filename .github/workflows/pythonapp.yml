@@ -1,0 +1,44 @@
+# This workflow will install Python dependencies, run tests and lint with a single version of Python
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
+
+name: linktofile Bot
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+  workflow_dispatch:
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+    - name: Install Fandogh Cli
+      run: pip install fandogh-cli
+
+    - name: Deploy
+      env:
+        IMAGE_URL: ${{secrets.IMAGE_URL}}
+        TOKEN: ${{secrets.TOKEN}}
+      run: |
+        export IMAGE_VERSION=$GITHUB_SHA
+        COLLECT_ERROR=True fandogh login --username ${{secrets.FAN_USR}} --password ${{secrets.FAN_PASS}}
+        COLLECT_ERROR=True fandogh image init --name $IMAGE_URL
+        COLLECT_ERROR=True fandogh image publish --version $GITHUB_SHA
+        COLLECT_ERROR=True fandogh service apply \
+                -f ./service.yml \
+                -p IMAGE_URL \
+                -p TOKEN 
+                -p IMAGE_VERSION
