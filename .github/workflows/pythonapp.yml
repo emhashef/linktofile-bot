@@ -40,5 +40,5 @@ jobs:
         COLLECT_ERROR=True fandogh service apply \
                 -f ./service.yml \
                 -p IMAGE_URL \
-                -p TOKEN 
+                -p TOKEN \
                 -p IMAGE_VERSION
