@@ -11,7 +11,7 @@ import cgi
 import uuid
 import sys
 
-bot_token = 'wlLNGViL8f2csG5I3m3v00ayia2CyvoWU05ai0qiaBT1vdrVOdrT0lahwViZrqhjUV9exO39p1xFdMuwg0Fnibkrra2dg-rEZ2P1WnXqGBfxH5U2gK-zTH1LnK6KEB18JekA2Od0-pxnY6rf'
+bot_token = os.environ.get('TOKEN')
 
 bot = Client(bot_token)
 
